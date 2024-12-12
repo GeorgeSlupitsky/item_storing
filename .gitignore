@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+.env
+.venv
+*.egg
+*.egg-info
+dist/
+build/
+*.whl
+
+# Poetry specific
+poetry.lock
+
+# Flask specific
+instance/
+*.db
+*.sqlite3
+
+# Pytest
+.cache/
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# MacOS specific
+.DS_Store
+
+# Logs and temp files
+*.log
+*.bak
+*.swp
+*.tmp
+*.temp
+
+# Generated files
+coverage/
+*.cover
+*.coverage
+*.cov
+htmlcov/
+
+# Environments
+.envrc
+.env
+.env.*
+
+# Python environment
+pymp-*

@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "item-storing"
+version = "0.1.0"
+description = "The Item Storing Project is a dynamic web application that integrates with third-party APIs to fetch supplementary information and seamlessly upload data entries to MementoDB. Designed for organizing and preserving collections, it supports vinyl records, CDs, books, and drumsticks, ensuring efficient and structured data management."
+authors = ["y.slupitskyi"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+flask = "^3.1.0"
+requests = "^2.32.3"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

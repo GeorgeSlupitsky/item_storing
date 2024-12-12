@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Entries</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .tab-content {
+            margin-top: 20px;
+        }
+        .photo-input {
+            margin-bottom: 10px;
+        }
+        .spinner {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Upload Entries</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="alert-container mt-3">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <ul class="nav nav-tabs" id="uploadTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="vinyl-tab" data-bs-toggle="tab" data-bs-target="#vinyls" type="button" role="tab">Vinyls</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cd-tab" data-bs-toggle="tab" data-bs-target="#cds" type="button" role="tab">CDs</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button" role="tab">Books</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="drumsticks-tab" data-bs-toggle="tab" data-bs-target="#drumsticks" type="button" role="tab">Drumsticks</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="uploadTabContent">
+            <!-- Vinyls Tab -->
+            <div class="tab-pane fade show active" id="vinyls" role="tabpanel">
+                <form action="/upload/vinyls" method="post" enctype="multipart/form-data" onsubmit="showSpinner('vinyls-spinner')">
+                    <div class="mb-3">
+                        <label for="vinyls-description" class="form-label">Description JSON:</label>
+                        <textarea name="description" id="vinyls-description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Add Photos (up to 10):</label>
+                        <input type="file" name="photos" class="form-control photo-input" accept="image/*" multiple required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <div id="vinyls-spinner" class="spinner-border text-primary spinner" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <!-- CDs Tab -->
+            <div class="tab-pane fade" id="cds" role="tabpanel">
+                <form action="/upload/cds" method="post" enctype="multipart/form-data" onsubmit="showSpinner('cds-spinner')">
+                    <div class="mb-3">
+                        <label for="cds-description" class="form-label">Description JSON:</label>
+                        <textarea name="description" id="cds-description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Add Photos (up to 10):</label>
+                        <input type="file" name="photos" class="form-control photo-input" accept="image/*" multiple required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <div id="cds-spinner" class="spinner-border text-primary spinner" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <!-- Books Tab -->
+            <div class="tab-pane fade" id="books" role="tabpanel">
+                <form action="/upload/books" method="post" enctype="multipart/form-data" onsubmit="showSpinner('books-spinner')">
+                    <div class="mb-3">
+                        <label for="books-description" class="form-label">Description JSON:</label>
+                        <textarea name="description" id="books-description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Add Photos (up to 10):</label>
+                        <input type="file" name="photos" class="form-control photo-input" accept="image/*" multiple required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <div id="books-spinner" class="spinner-border text-primary spinner" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <!-- Drumsticks Tab -->
+            <div class="tab-pane fade" id="drumsticks" role="tabpanel">
+                <form action="/upload/drumsticks" method="post" enctype="multipart/form-data" onsubmit="showSpinner('drumsticks-spinner')">
+                    <div class="mb-3">
+                        <label for="drumsticks-description" class="form-label">Description JSON:</label>
+                        <textarea name="description" id="drumsticks-description" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Add Photos (up to 10):</label>
+                        <input type="file" name="photos" class="form-control photo-input" accept="image/*" multiple required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <div id="drumsticks-spinner" class="spinner-border text-primary spinner" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tabs = ["vinyls", "cds", "books", "drumsticks"];
+            function saveState(tab) {
+                const form = document.querySelector(`#${tab} form`);
+                if (form) {
+                    const formData = new FormData(form);
+                    const state = {};
+                    formData.forEach((value, key) => {
+                        state[key] = value;
+                    });
+                    localStorage.setItem(tab, JSON.stringify(state));
+                }
+            }
+
+            function restoreState(tab) {
+                const state = JSON.parse(localStorage.getItem(tab) || "{}");
+                const form = document.querySelector(`#${tab} form`);
+                if (form) {
+                    Object.entries(state).forEach(([key, value]) => {
+                        const input = form.querySelector(`[name="${key}"]`);
+                        if (input) input.value = value;
+                    });
+                }
+            }
+
+            tabs.forEach((tab) => {
+                const tabButton = document.querySelector(`#${tab}-tab`);
+                if (tabButton) {
+                    tabButton.addEventListener("click", () => {
+                        saveState(localStorage.getItem("activeTab") || tabs[0]);
+                        restoreState(tab);
+                        localStorage.setItem("activeTab", tab);
+                    });
+                }
+            });
+
+            const activeTab = localStorage.getItem("activeTab") || tabs[0];
+            restoreState(activeTab);
+            const activeTabButton = document.querySelector(`#${activeTab}-tab`);
+            if (activeTabButton) activeTabButton.click();
+        });
+
+        function showSpinner(spinnerId) {
+            const spinner = document.getElementById(spinnerId);
+            if (spinner) {
+                spinner.style.display = "inline-block";
+            }
+        }
+    </script>
+</body>
+</html>
